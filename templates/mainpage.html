@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/static/theme.js"></script>
     
 </head>
 <body>
@@ -17,20 +18,7 @@
     <img src="/static/navbar.png" width="100">
   </div>
 	
-  <script>
-    function changeTheme(){
-      
-      if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-        document.getElementById("icon").href = "/static/logolight.png"
-      }else{
-        document.getElementById("icon").href = "/static/logodark.png"
-      }
-
-
-    }
-    changeTheme()
-    setInterval(changeTheme,1000)
-  </script>
+  
   <style>
     .navbar{
       border-bottom:1px solid #c9c9c9;
