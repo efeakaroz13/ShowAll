@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+	<meta charset="utf-8">
+	<title>3D</title>
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+
+	<script type="text/javascript" src="https://threejs.org/build/three.js"></script>
+
+
+	<script type="text/javascript" src="https://threejs.org/examples/js/libs/stats.min.js"></script>
+
+	<script type="text/javascript" src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/parse/2.19.0/parse.min.js"
+		integrity="sha512-WN/Kjj6CueqleXN+SVhzx2yTjh1hpSCZXyIGrsMLj/T2Z8v8U7Cp4Nfj3jxg9OGr2nuZ25/2ddcG4E5uIkANgg=="
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+
+<body>
+
+	
+	<script>
+		let scene, camera, renderer;
+		function init() {
+
+			scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xffffff);
+			camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 5000);
+			camera.rotation.y = 90 / 180 * Math.PI;
+			camera.position.x = 10;
+			camera.position.y = 10;
+			camera.position.z = 10;
+
+			hlight = new THREE.AmbientLight(0x404040, 6);
+			scene.add(hlight);
+			directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+			directionalLight.position.set(10, -200, -10);
+			directionalLight.castShadow = true;
+			scene.add(directionalLight);
+
+
+			mylight = new THREE.DirectionalLight(0xffffff, 1);
+			mylight.position.set(-100, 100, -100);
+			mylight.castShadow = true;
+			scene.add(mylight);
+
+			mylight1 = new THREE.DirectionalLight(0xffffff, 2);
+			mylight1.position.set(-100, 100, 100);
+			mylight1.castShadow = true;
+			scene.add(mylight1);
+
+			light = new THREE.PointLight(0xc4c4c4, 1);
+			light.position.set(0, 300, 5000);
+			scene.add(light);
+			light2 = new THREE.PointLight(0xc4c4c4,1);
+			light2.position.set(500, -100, 4000);
+			scene.add(light2);
+			light3 = new THREE.PointLight(0xc4c4c4, 1);
+			light3.position.set(0, 600, -5000);
+			scene.add(light3);
+			light4 = new THREE.PointLight(0xc4c4c4, 1);
+			light4.position.set(-500, -500, -9000);
+			scene.add(light4);
+			renderer = new THREE.WebGLRenderer({ antialias: true,alpha:true });
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+			document.body.appendChild(renderer.domElement);
+			let loader = new THREE.GLTFLoader();
+
+
+			const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+			loader.load("{{url_for('static',filename='models/'+modelName+'/scene.gltf')}}", function (gltf) {
+				car = gltf.scene.children[0];
+				car.scale.set(3, 3, 3);
+				try {
+					model2 = gltf.scene.children[1];
+					model2.scale.set(3, 3, 3);
+				} catch (error) {
+					null
+				}
+				scene.add(gltf.scene);
+				animate();
+			});
+		}
+		function animate() {
+			renderer.render(scene, camera);
+			requestAnimationFrame(animate);
+		}
+		init();
+	</script>
+</body>
+
+</html>

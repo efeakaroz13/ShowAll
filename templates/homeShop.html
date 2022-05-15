@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D-Shop</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+        <a class="navbar-brand" href="" style="margin-left: 20px;">3D Shop</a>
+        
+        
+    </nav>
+    <div class="container">
+        <br>
+        <center><h1>Items:</h1></center>
+        {% if products != None %}
+            {% for p in products %}
+                <div class="card" style="width: 20rem;">
+                    
+                    <div class="card-body">
+                        <iframe class="card-img-top" src="/view/{{p}}" alt="Card image cap"></iframe>
+                        <h5 class="card-title">{{p}}</h5>
+                        <p class="card-text">Price : {{db.child('Items').child(p).child('price').get().val()}}$</p>
+                        <a href="/product/{{p}}" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+
+        {% endif %}
+    </div>
+</body>
+</html>

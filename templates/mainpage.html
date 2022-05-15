@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show All</title>
+    <link rel="icon" href="/static/logodark.png" id="icon"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+</head>
+<body>
+  <div class="navbar">
+    <img src="/static/navbar.png" width="100">
+  </div>
+	
+  <script>
+    function changeTheme(){
+      
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+        document.getElementById("icon").href = "/static/logolight.png"
+      }else{
+        document.getElementById("icon").href = "/static/logodark.png"
+      }
+
+
+    }
+    changeTheme()
+    setInterval(changeTheme,1000)
+  </script>
+  <style>
+    .navbar{
+      border-bottom:1px solid #c9c9c9;
+      margin:10px;
+    }
+  </style>
+</body>
+</html>

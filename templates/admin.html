@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show All Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+</head>
+<body>
+	<div style="border-bottom:1px solid#000">
+    <h1 style="font-family:monospace"><img src="/static/fav.png" width=50 > </h1>
+    <p style="font-family: 'Koulen', cursive;font-size:20px;position:absolute;top:10px;left:100px">Show All Admin </p>
+    </div>
+    <button style="position:absolute;right:10px;top:10px" onclick="window.location.assign('/admin/logout')">Log out</button>
+    <div class="left-side">
+    <ul>
+    	<li>Add Item(selected)</li>
+    	
+    </ul>
+    </div>
+    <div class="content">
+
+    	<h1>Add Item</h1>
+    	<p>Upload gltf as zip(for preview)</p>
+    	<form method="POST"action="/modelUpload" enctype="multipart/form-data" id="myForm">
+    		<input type="file" name="modelFileZip" id="file"><br>
+    		<button id="submit" style="display:none">Submit</button>
+    	</form>
+    	<div class="preview">
+    		{% if modelFile=="False" %}
+    		{% else %}
+    			<iframe frameBorder="0" src="/model/{{modelFile}}"></iframe>
+        {% endif  %}
+    	   </div>
+        {% if modelFile!="False" %}
+    		<p style="font-family:monospace;position:absolute;right:10px;">{{modelFile}}.zip<br>
+    			<button onclick="window.location.assign('/deleteModel/{{modelFile}}')">Delete Model</button><button onclick="window.location.assign('/closePreview')">Close preview</button>
+    		</p>	
+    		{% endif  %}
+
+          		
+    	
+    	
+    	
+    	
+    <br><br>
+
+    <div class="models">
+      <h2>Models</h2>
+      <ul id="modelList"></ul>
+    </div>
+    
+    <br>
+    <div id="formEnter" style="display:none">
+        <form method="POST" action="/create/product" >
+          <input type="text" placeholder="Enter title..." name="title"><br>
+          <input type="number"  name="price"placeholder="Enter price..."><select name="currency"><option value="dollar">$</option><option value="turkish-lira">₺</option></select><br>
+          <textarea placeholder="Description..." name="description"></textarea>
+          <button>Create Product</button>
+        </form>
+      
+    </div> 
+  </div>
+
+   	<style>
+   		.body{
+   			font-family: 'Koulen', cursive;
+   		}
+   		.preview{
+   			position:absolute;
+   			font-family: 'Koulen', cursive;
+   			right:10px;
+   			top:10px;
+   			border:1px solid#000;
+   		}
+   		.left-side{
+			width:25%;
+   			text-align:center;
+   			border-right:1px solid#000;
+   			position:absoulte;
+   			left:0px;
+   			top:150px;
+   			height:400px;
+   			font-family: 'Koulen', cursive;
+   			
+   		}
+   		.content{
+   			width:70%;
+   		
+   			position:absolute;
+   			right:0px;
+   			top:100px;
+   			font-family: 'Koulen', cursive;
+   		}
+   	</style>
+   	<script>
+   		function CheckFile(){
+   			if ($('#file')[0].files.length === 0) {
+				document.getElementById("submit").style.display = "none";
+   			} else {
+	   			document.getElementById("submit").click()
+          document.getElementById("formEnter").style.display = "";
+
+			}
+   		}
+   		setInterval(CheckFile,1000)
+      function checkCookie(){
+        const getCookieValue = (name) => (
+          document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+        )
+        if (getCookieValue("fileName") != ''){
+          document.getElementById("formEnter").style.display = "";
+        }
+        else{
+          document.getElementById("formEnter").style.display = "none";
+        }
+      }
+      checkCookie()
+      setInterval(checkCookie,1000)
+   		
+   	</script>
+    <script>
+      function updateFileList(){
+        const getCookieValue = (name) => (
+          document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+        )
+        $.getJSON("/list/models",function(data){
+          document.getElementById("modelList").innerHTML="";
+          for (var i = data.models.length - 1; i >= 0; i--) {
+            if (getCookieValue("fileName").replace(".zip","") == data.models[i]){
+              document.getElementById("modelList").innerHTML=document.getElementById("modelList").innerHTML+"<li><a style='color:green' href='/set/model/"+data.models[i]+"'>/"+data.models[i]+"</a></li>";
+            }else{
+            
+            document.getElementById("modelList").innerHTML=document.getElementById("modelList").innerHTML+"<li><a href='/set/model/"+data.models[i]+"'>/"+data.models[i]+"</a></li>";
+            }
+          };
+        })
+
+      }
+      updateFileList()
+      setInterval(updateFileList,1000)
+
+    </script>
+
+</body>
+</html>

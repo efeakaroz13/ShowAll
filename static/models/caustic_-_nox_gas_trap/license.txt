@@ -1,0 +1,11 @@
+Model Information:
+* title:	Caustic - Nox Gas Trap
+* source:	https://sketchfab.com/3d-models/caustic-nox-gas-trap-bb8bb186f78d4549a8e8c12abf2331a8
+* author:	Jamie McFarlane (https://sketchfab.com/jamiemcfarlane)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Caustic - Nox Gas Trap" (https://sketchfab.com/3d-models/caustic-nox-gas-trap-bb8bb186f78d4549a8e8c12abf2331a8) by Jamie McFarlane (https://sketchfab.com/jamiemcfarlane) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
