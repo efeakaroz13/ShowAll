@@ -1,0 +1,29 @@
+.body{
+	font-family: 'Koulen', cursive;
+}
+.preview{
+	position:absolute;
+	font-family: 'Koulen', cursive;
+	right:10px;
+	top:10px;
+	border:0px solid#000;
+}
+.left-side{
+width:25%;
+	text-align:center;
+	border-right:1px solid#000;
+	position:absoulte;
+	left:0px;
+	top:150px;
+	height:400px;
+	font-family: 'Koulen', cursive;
+	
+}
+.content{
+	width:70%;
+
+	position:absolute;
+	right:0px;
+	top:100px;
+	font-family: 'Koulen', cursive;
+}

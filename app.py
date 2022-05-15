@@ -7,10 +7,18 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
 from os.path import join, dirname, realpath
 import json
+import requests
+
 
 key =b'NDh7sdSVUmb6_O8-nvd2mADYzMFrrdhXoa-G8cqVIb0='
 fernet = Fernet(key)
 
+
+def currency_to_logo(value):
+    if value =="dollar":
+        return "$"
+    else:
+        return "₺"
 
 
 def decrypt(textVal):
@@ -223,7 +231,9 @@ class adminStuff:
 class Home:
     @app.route("/")
     def site_index():
-        return render_template("mainpage.html")
+        apiCall = requests.get("http://localhost:5000/api/v1/items")
+        jsonout = json.loads(apiCall.content)
+        return render_template("mainpage.html",items=jsonout,currency_to_logo=currency_to_logo)
 
 
 class apiV1:
@@ -236,6 +246,7 @@ class apiV1:
         for f in filesinproducts:
             myfile = open("products/"+f,"r").read()
             myfileJsonObject = json.loads(decrypt(myfile))
+            myfileJsonObject["model"] = myfileJsonObject["model"].replace(".zip","")
             out["Items"].insert(0,myfileJsonObject)
 
 

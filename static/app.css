@@ -1,0 +1,19 @@
+.navbar{
+    border-bottom:1px solid #c9c9c9;
+    margin:10px;
+}
+
+.card{
+	margin:20px;
+	padding:20px;
+	width:70%;
+	align-items:center;
+
+	border:1px solid #c9c9c9;
+	border-radius:10px;
+	text-align: left;
+}
+
+.title{
+	font-size:25px;
+}
