@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/logodark.png" id="icon">
+    <title>Show All Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/static/theme.js"></script>
+    <link rel="stylesheet" href="/static/admin.css">
+    
+</head>
+<body>
+	<div style="border-bottom:1px solid#000">
+    <h1 style="font-family:monospace"><img src="/static/fav.png" width=50 > </h1>
+    <p style="font-family: 'Koulen', cursive;font-size:20px;position:absolute;top:10px;left:100px">Show All Admin </p>
+    </div>
+    <button style="position:absolute;right:10px;top:10px" onclick="window.location.assign('/admin/logout')">Log out</button>
+    <div class="left-side">
+    <ul>
+    	<li><a href="/admin">Add Item</a></li>
+    	<li><a href="">Viewers(selected)</a></li>
+
+    	
+    </ul>
+    </div>
+    <div class="content">
+    	<h1>Viewers</h1>
+    	<ul id="viewers">
+    		{% for f in files %}
+    			<li><a href="/admin/viewers/setCookie/{{f}}">/{{f|replace(".txt","")}}</a></li>
+    		{% endfor  %}
+
+    	</ul>
+        <button onclick=loadViews()>Load</button>
+        <button id="goback" disabled onclick="goBack()">Go Back</button>
+    	<div class="views" id="views"></div>
+    	<script>
+    		function loadViews(){
+
+    			$.getJSON("/viewers/"+getCookieValue("viewerset"),function(data){
+                    document.getElementById("viewers").innerHTML = "";
+                    document.getElementById("goback").disabled=false;
+
+    				for (var i = data.out.length - 1; i >= 0; i--) {
+    					console.log(data.out[i])
+                        document.getElementById("viewers").innerHTML = document.getElementById("viewers").innerHTML+"<li>"+data.out[i]+"</li>"
+
+    				};
+    			})
+    		}
+            function goBack(){
+                window.location.assign("/admin/viewers");
+            }
+    	</script>
+    </div>
+
+    <p style="position:absolute;bottom:1px;left:5px;color:grey;">Made by Efe Akaröz</p>
+</body>
+</html>

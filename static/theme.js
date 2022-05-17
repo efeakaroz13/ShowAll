@@ -1,7 +1,7 @@
 /*
 	Author:Efe Akaröz
 	15/05/2022
-	
+
 */
 function changeTheme(){
       
@@ -15,3 +15,12 @@ function changeTheme(){
 }
 changeTheme()
 setInterval(changeTheme,1000)
+
+
+
+function order(model){
+	window.location.assign("/order/"+model);
+}
+const getCookieValue = (name) => (
+	document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+)

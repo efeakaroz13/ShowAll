@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,make_response
+from flask import Flask,render_template,request,redirect,make_response,abort
 import pyrebase
 import shutil
 from cryptography.fernet import Fernet
@@ -90,10 +90,10 @@ class adminStuff:
                 return response
 
             else:
-                return 403
+                return abort(403)
 
         else:
-            return 403
+            return abort(403)
 
     @app.route("/list/models")
     def listModels():
@@ -224,9 +224,37 @@ class adminStuff:
     def model(modelName):
         return render_template("index.html",modelName=modelName)
 
+    @app.route("/admin/viewers")
+    def viewers():
+        files = os.listdir("./views")
+
+        return render_template("viewers.html",files=files)
+
+    @app.route("/viewers/<fileName>")
+    def viewerLoad(fileName):
+        username = request.cookies.get("username")
+        if username == None:
+            return abort(403)
+        else:
+            username = decrypt(username)
+            password = decrypt(request.cookies.get("password"))
+            if username == "efeakaroz13" and password=="efeAkaroz123":
+
+                out = []
+                reader = open("views/{}".format(fileName),"r").readlines()
+                for r in reader:
+                    out.insert(0,decrypt(r.replace("\n","")))
+            else:
+                return abort(403)
 
 
+        return {"out":out}
 
+    @app.route("/admin/viewers/setCookie/<fileName>")
+    def fileSetCookie(fileName):
+        response = make_response(redirect("/admin/viewers"))
+        response.set_cookie("viewerset",fileName)
+        return response
 
 class Home:
     @app.route("/")
@@ -234,7 +262,23 @@ class Home:
         apiCall = requests.get("http://localhost:5000/api/v1/items")
         jsonout = json.loads(apiCall.content)
         return render_template("mainpage.html",items=jsonout,currency_to_logo=currency_to_logo)
+    @app.route("/order/<theFile>")
+    def orderTheThing(theFile):
+        theF = json.loads(decrypt(open("products/{}".format(theFile),"r").read()))
+        theFviewers = open("views/{}".format(theFile),"a")
+        try:
+            theLine =  f"{request.environ['HTTP_X_FORWARDED_FOR']} - {request.headers.get('User-Agent')}"
+        except:
+            
+            theLine =  f"{request.environ['REMOTE_ADDR']} - {request.headers.get('User-Agent')}"
+        theFviewers.write(str(encrypt(theLine))+"\n")
 
+        theFviewers.close()
+
+
+
+
+        return render_template("products.html",theF=theF)
 
 class apiV1:
     @app.route("/api/v1/items")
@@ -247,6 +291,9 @@ class apiV1:
             myfile = open("products/"+f,"r").read()
             myfileJsonObject = json.loads(decrypt(myfile))
             myfileJsonObject["model"] = myfileJsonObject["model"].replace(".zip","")
+            myfileJsonObject["fileTXT"] = f
+            
+            
             out["Items"].insert(0,myfileJsonObject)
 
 
