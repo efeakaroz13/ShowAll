@@ -278,7 +278,7 @@ class Home:
 
 
 
-        return render_template("products.html",theF=theF)
+        return render_template("products.html",theF=theF,currency_to_logo=currency_to_logo)
 
 class apiV1:
     @app.route("/api/v1/items")

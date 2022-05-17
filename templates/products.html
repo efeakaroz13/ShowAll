@@ -10,7 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/static/theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+	<script src="/static/theme.js"></script>
     <link rel="stylesheet" href="/static/app.css">
     
 </head>
@@ -22,12 +25,25 @@
   <br>
 
   <br>
+  <div class="content">
+  <center>
   <div class="card">
   	<h5 class="title">{{theF["title"]}}</h5>
-  	<p>{{theF}}</p>
-  </div>
+  	<center><iframe src="/model/{{theF['model']}}" frameborder=0 style="width:100%;height:400px"></iframe></center>
 
+  	<p>{{theF["price"]}}{{currency_to_logo(theF["currency"])}}</p>
+
+  	<p>Description:{{theF["description"]}}</p>
+  </div>
+   <div class="card">
+   	<h5 class="title">Enter your information</h5>
+   	<form action="" method="POST">
+   		<input name="fullName" placeholder="FullName...">
+   	</form>
+   </div>
+  </div><br>
+ 
   
-  
+  </center>
 </body>
 </html>
