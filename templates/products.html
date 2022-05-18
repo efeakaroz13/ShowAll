@@ -15,16 +15,20 @@
 	<link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
 	<script src="/static/theme.js"></script>
     <link rel="stylesheet" href="/static/app.css">
+    <script src="/static/order.js"></script>
     
 </head>
 <body>
   <div class="navbar">
-    <img src="/static/navbar.png" width="100">
+    <img src="/static/navbar.png" onclick="window.location.assign('/')" width="100">
   </div>
 	
   <br>
 
   <br>
+  {% if messagge != None %}
+  	<a style="font-family:sans-serif;margin-left:10px"href="/OrderRecieved">{{messagge}}</a>
+  {% endif %}
   <div class="content">
   <center>
   <div class="card">
@@ -37,13 +41,21 @@
   </div>
    <div class="card">
    	<h5 class="title">Enter your information</h5>
-   	<form action="" method="POST">
-   		<input name="fullName" placeholder="FullName...">
+   	<form action="" method="POST" onsubmit="return false;">
+   		<input name="fullName" placeholder="FullName..." required><br><br>
+   		<input name="city" placeholder="City" required><br><br>
+   		<input name="email" placeholder="E-Mail..." required></br><br>
+   		<input name="phonenum" placeholder="Mobile Phone..." required><br><br>
+   		<textarea name="address"placeholder="Adress" required></textarea><br>
+   		<input placeholder="Coordinates" name="coords" id="coords" disabled>
+
    	</form>
+   	<button onclick="requestForLocation()">Get my location for delivery and order</button>
    </div>
   </div><br>
  
   
   </center>
+  
 </body>
 </html>

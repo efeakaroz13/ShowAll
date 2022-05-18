@@ -8,6 +8,7 @@ from werkzeug.datastructures import  FileStorage
 from os.path import join, dirname, realpath
 import json
 import requests
+import smtplib
 
 
 key =b'NDh7sdSVUmb6_O8-nvd2mADYzMFrrdhXoa-G8cqVIb0='
@@ -33,7 +34,12 @@ app.config["UPLOAD_FOLDER"] = "./static/models"
 
 
 class adminStuff:
+    @app.route("/OrderRecieved")
+    def OrderRecieved():
+        return """
+            <script>alert("We took your order and we will call you in 2 business days for delivery destination. We will take the payment face to face.");window.history.back()</script>
 
+        """
     @app.route("/create/product",methods=["POST"])
     def createProduct():
         modelName = request.cookies.get("fileName")
@@ -262,8 +268,44 @@ class Home:
         apiCall = requests.get("http://localhost:5000/api/v1/items")
         jsonout = json.loads(apiCall.content)
         return render_template("mainpage.html",items=jsonout,currency_to_logo=currency_to_logo)
-    @app.route("/order/<theFile>")
+
+
+
+
+
+    @app.route("/order/<theFile>",methods=["POST","GET"])
     def orderTheThing(theFile):
+        orderRecieved = request.args.get("orderRecived")
+
+        if orderRecieved == "True":
+            messagge = "Your order has been recieved we will contact you soon."
+        else:
+            messagge=None
+        if request.method == "POST":
+            print("post")
+            
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.ehlo()
+            server.starttls()
+            gmail_sender = 'ceteleplatform@gmail.com'
+            gmail_passwd = 'efeAkaroz123'
+            fullname = request.form.get("fullName")
+            city = request.form.get("city")
+            email = request.form.get("email")
+            phoneNumber = request.form.get("phonenum")
+            address=request.form.get("address")
+            coordinates=request.form.get("coords")
+            ourOwnData = f"fullName1313={fullname}andthenemail={email}andthencity={city}andthenphoneNumber={phoneNumber}andthenaddress={address}andthencoordinates={coordinates}"
+
+            ordersWrite = open("orders/{}.txt".format(theFile),"a")
+            ordersWrite.write(encrypt(ourOwnData)+"\n")
+            server.login(gmail_sender, gmail_passwd)
+            message = 'Subject: {}\n\n{}'.format(f"{fullname} ,New Order",str(ourOwnData.replace("andthen","\n")+f"\n{str(theFile)}"))
+            server.sendmail(gmail_sender, "efeakaroz13@proton.me", message.encode('utf-8'))
+            server.sendmail(gmail_sender, email, 'Subject: {}\n\n{}'.format(f"{fullname} ,Order Recieved",str("We will call you in 2 business days for more info")).encode('utf-8'))
+            return redirect("/order/{}?orderRecived=True".format(theFile))
+
+
         theF = json.loads(decrypt(open("products/{}".format(theFile),"r").read()))
         theFviewers = open("views/{}".format(theFile),"a")
         try:
@@ -278,7 +320,7 @@ class Home:
 
 
 
-        return render_template("products.html",theF=theF,currency_to_logo=currency_to_logo)
+        return render_template("products.html",theF=theF,currency_to_logo=currency_to_logo,messagge=messagge)
 
 class apiV1:
     @app.route("/api/v1/items")
