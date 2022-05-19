@@ -31,3 +31,12 @@ input{
 
 	padding:3px;
 }
+body{
+	padding:0;
+	margin:0;
+}
+.container{
+	margin-left:20px;
+	font-family: 'Koulen', cursive;
+	font-family: 'Merriweather', serif;
+}

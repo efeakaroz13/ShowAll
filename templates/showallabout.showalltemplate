@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About- Show All</title>
+    <link rel="icon" href="/static/logodark.png" id="icon"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/static/theme.js"></script>
+    <link rel="stylesheet" href="/static/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Koulen&family=Merriweather:wght@300&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+  <div class="navbar">
+    <img src="/static/navbar.png"  onclick="window.location.assign('/')" width="100">
+  </div>
+  <br><br>
+  <div class="container">
+  	<h2>About</h2>
+  	<h3>Target of platform</h3>
+  	<p>We are planning to decrease server storage amounts of big online selling platforms. We are doing it with  3D technologies. We are not sharing any of your personal information on internet also we have storing all data  encrypted. Also all platform is open-source at github.</p>
+
+
+  	<h3>Our technology</h3>
+  	<p>Customers can view every side of the product with ther cursors and their fingers.</p>
+  	<h3>Creator's Note(Efe Akaröz)</h3>
+  	<p>Hello I am the creator of "Show All". The reason that I created this website is improving online selling technology. When I was 10 I started to make some 3D games. After 5 years I said to myself I know about 3D and the online marketting place need and innovation. After that I started to develop "Show All" I worked 2 months for "Show All" but in these days you can use the website and order something.
+  </div>
+</body>
+</html>

@@ -1,3 +1,6 @@
+#Copyright (c) 2022, Efe Akaröz
+#All rights reserved.
+
 from flask import Flask,render_template,request,redirect,make_response,abort
 import pyrebase
 import shutil
@@ -9,6 +12,9 @@ from os.path import join, dirname, realpath
 import json
 import requests
 import smtplib
+
+
+
 
 
 key =b'NDh7sdSVUmb6_O8-nvd2mADYzMFrrdhXoa-G8cqVIb0='
@@ -44,12 +50,12 @@ class adminStuff:
     def createProduct():
         modelName = request.cookies.get("fileName")
         if modelName == None:
-            return 403
+            return abort(403)
 
         else:
             username = request.cookies.get("username")
             if username == None:
-                return 403
+                return abort(403)
 
             else:
                 username = decrypt(username)
@@ -72,7 +78,7 @@ class adminStuff:
                     fileWrite = open(f"products/{title.replace(' ','').replace('.','').replace('/','').replace('?','').replace('|','')}.txt","w")
                     fileWrite.write(encrypt(theInfo))
                 else:
-                    return 403
+                    return abort(403)
         return redirect("/admin?createdProduct=True")
 
     @app.route("/admin/logout")
@@ -283,7 +289,7 @@ class Home:
             messagge=None
         if request.method == "POST":
             print("post")
-            
+
             server = smtplib.SMTP('smtp.gmail.com', 587)
             server.ehlo()
             server.starttls()
@@ -340,6 +346,46 @@ class apiV1:
 
 
         return out
+
+
+class ErrorHandler:
+    @app.errorhandler(404)
+    def forofour(e):
+        try:
+            theLine =  f"{request.environ['HTTP_X_FORWARDED_FOR']} - {request.headers.get('User-Agent')}"
+        except:
+            
+            theLine =  f"{request.environ['REMOTE_ADDR']} - {request.headers.get('User-Agent')}"
+        crashFile = open("errorHandler.txt","a")
+        crashFile.write(str(e)+"| "+theLine+"\n")
+        return render_template("404.html",e=e)
+
+    @app.errorhandler(403)
+    def fourothree(e):
+        try:
+            theLine =  f"{request.environ['HTTP_X_FORWARDED_FOR']} - {request.headers.get('User-Agent')}"
+        except:
+            
+            theLine =  f"{request.environ['REMOTE_ADDR']} - {request.headers.get('User-Agent')}"
+        crashFile = open("errorHandler.txt","a")
+        crashFile.write(str(e)+"| "+theLine+"\n")
+        return render_template("403.html")
+
+    @app.errorhandler(500)
+    def fivehundered(e):
+        try:
+            theLine =  f"{request.environ['HTTP_X_FORWARDED_FOR']} - {request.headers.get('User-Agent')}"
+        except:
+            
+            theLine =  f"{request.environ['REMOTE_ADDR']} - {request.headers.get('User-Agent')}"
+        crashFile = open("errorHandler.txt","a")
+        crashFile.write(str(e)+"| "+theLine+"\n")
+        return render_template("500.html")
+
+class About:
+    @app.route("/about")
+    def about():
+        return render_template("showallabout.showalltemplate")
 
 
 app.run(debug=True)
