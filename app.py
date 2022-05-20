@@ -40,6 +40,66 @@ app.config["UPLOAD_FOLDER"] = "./static/models"
 
 
 class adminStuff:
+    @app.route("/admin/orders/<filename>")
+    def ordersViewer(filename):
+        ordersFolder = os.listdir("orders")
+        out = {"OutFiles":ordersFolder}
+        username = request.cookies.get("username")
+        if username == None:
+            return abort(403)
+        else:
+            username = decrypt(username)
+            password = decrypt(request.cookies.get("password"))
+            if username == "efeakaroz13" and password == "efeAkaroz123":
+                actualOrders = []
+                orders = open("orders/"+filename,"r").readlines()
+                for o in orders:
+                    try:
+                        actualOrders.insert(0,decrypt(o))
+                    except:
+                        pass
+                        
+
+                return render_template("orders.html",orders=actualOrders,orderMode=True,out=out,value=filename)
+
+            else:
+                return abort(403)
+    @app.route("/admin/orders")
+    def adminOrder():
+        ordersFolder = os.listdir("orders")
+        out = {"OutFiles":ordersFolder}
+
+        username = request.cookies.get("username")
+        if username == None:
+            return abort(403)
+        else:
+            username = decrypt(username)
+            password = decrypt(request.cookies.get("password"))
+            if username == "efeakaroz13" and password == "efeAkaroz123":
+
+                return render_template("orders.html",out=out)
+
+            else:
+                return abort(403)
+
+    @app.route("/admin/orders/<filename>/clear")
+    def clearOrders( filename):
+        username = request.cookies.get("username")
+        password = request.cookies.get("password")
+        if username == None:
+            return abort(403)
+
+        else:
+            username = decrypt(username)
+            password = decrypt(password)
+            if username == "efeakaroz13" and password == "efeAkaroz123":
+                open("orders/"+filename,"w")
+
+            else:
+                return abort(403)
+        return redirect("/admin/orders/{}".format(filename))
+
+
     @app.route("/OrderRecieved")
     def OrderRecieved():
         return """
@@ -271,8 +331,20 @@ class adminStuff:
 class Home:
     @app.route("/")
     def site_index():
-        apiCall = requests.get("http://localhost:5000/api/v1/items")
-        jsonout = json.loads(apiCall.content)
+        out = {
+            "Items":[]
+        }
+        filesinproducts = os.listdir("products")
+        for f in filesinproducts:
+            myfile = open("products/"+f,"r").read()
+            myfileJsonObject = json.loads(decrypt(myfile))
+            myfileJsonObject["model"] = myfileJsonObject["model"].replace(".zip","")
+            myfileJsonObject["fileTXT"] = f
+            
+            
+            out["Items"].insert(0,myfileJsonObject)
+
+        jsonout = out
         return render_template("mainpage.html",items=jsonout,currency_to_logo=currency_to_logo)
 
 

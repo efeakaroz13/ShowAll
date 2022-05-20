@@ -24,42 +24,33 @@
     <div class="left-side">
     <ul>
     	<li><a href="/admin">Add Item</a></li>
-    	<li><a href="">Viewers(selected)</a></li>
-        <li><a href="/admin/orders">Orders</a></li>
-
+    	<li><a href="/admin/viewers">Viewers</a></li>
+        <li><a href="/admin/orders">Orders(selected)</a></li>
 
     	
     </ul>
     </div>
     <div class="content">
-    	<h1>Viewers</h1>
-    	<ul id="viewers">
-    		{% for f in files %}
-    			<li><a href="/admin/viewers/setCookie/{{f}}">/{{f|replace(".txt","")}}</a></li>
-    		{% endfor  %}
+    	<h1>Orders</h1>
+        <ul>
 
-    	</ul>
-        <button onclick=loadViews()>Load</button>
-        <button id="goback" disabled onclick="goBack()">Go Back</button>
-    	<div class="views" id="views"></div>
-    	<script>
-    		function loadViews(){
+            {% for o in out["OutFiles"] %}
+                <li><a href="/admin/orders/{{o}}">{{o}}</a></li>
+            {% endfor %}
+        </ul>
+        <ul style="font-family:sans-serif">
+        {% if orderMode == True %}
+            <h2>Orders</h2>
+            {% for o in orders %}
 
-    			$.getJSON("/viewers/"+getCookieValue("viewerset"),function(data){
-                    document.getElementById("viewers").innerHTML = "";
-                    document.getElementById("goback").disabled=false;
-
-    				for (var i = data.out.length - 1; i >= 0; i--) {
-    					console.log(data.out[i])
-                        document.getElementById("viewers").innerHTML = document.getElementById("viewers").innerHTML+"<li>"+data.out[i]+"</li>"
-
-    				};
-    			})
-    		}
-            function goBack(){
-                window.location.assign("/admin/viewers");
-            }
-    	</script>
+                {% for a in o.split("andthen") %}
+                    <li>{{a}}</li>
+                {% endfor %}
+                <br><br>
+            {% endfor %}
+        {% endif %}
+        </ul>
+        <button onclick="window.location.assign('/admin/orders/{{value}}/clear')">Clear Orders</button>
     </div>
 
     <p style="position:absolute;bottom:1px;left:5px;color:grey;">Made by Efe Akaröz</p>
